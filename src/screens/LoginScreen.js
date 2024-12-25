@@ -15,7 +15,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     axios
-      .post("http://192.168.18.33/api/login.php", { username, password })
+      .post("http://172.20.10.5/api/login.php", { username, password })
       .then((response) => {
         if (response.data.message) {
           navigation.replace("Dashboard");

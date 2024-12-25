@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 const AddEditScreen = ({ navigation, route }) => {
@@ -14,33 +15,41 @@ const AddEditScreen = ({ navigation, route }) => {
   const [name, setName] = useState(contact ? contact.name : "");
   const [phone, setPhone] = useState(contact ? contact.phone : "");
 
-  // Ambil fungsi fetchContacts dari navigasi
+  // Mengambil fungsi fetchContacts dari route params
   const fetchContacts = route.params?.fetchContacts;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Validasi input
+    if (!name.trim() || !phone.trim()) {
+      Alert.alert("Error", "Nama dan Nomor Telepon tidak boleh kosong");
+      return;
+    }
+
     const url = contact
-      ? "http://192.168.18.33/api/update.php"
-      : "http://192.168.18.33/api/create.php";
+      ? "http://172.20.10.5/api/update.php"
+      : "http://172.20.10.5/api/create.php";
     const payload = contact ? { id: contact.id, name, phone } : { name, phone };
 
-    axios
-      .post(url, payload)
-      .then(() => {
-        Alert.alert(
-          "Berhasil",
-          contact ? "Kontak diperbarui" : "Kontak ditambahkan",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                if (fetchContacts) fetchContacts(); // Panggil fetchContacts untuk update dashboard
-                navigation.goBack();
-              },
+    try {
+      await axios.post(url, payload);
+      Alert.alert(
+        "Berhasil",
+        contact ? "Kontak diperbarui" : "Kontak ditambahkan",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              if (fetchContacts && typeof fetchContacts === "function") {
+                fetchContacts(); // Memanggil fetchContacts untuk update data
+              }
+              navigation.goBack(); // Kembali ke layar sebelumnya
             },
-          ]
-        );
-      })
-      .catch(() => Alert.alert("Error", "Terjadi kesalahan"));
+          },
+        ]
+      );
+    } catch (error) {
+      Alert.alert("Error", "Terjadi kesalahan");
+    }
   };
 
   return (
@@ -60,6 +69,7 @@ const AddEditScreen = ({ navigation, route }) => {
         value={phone}
         onChangeText={setPhone}
         keyboardType="phone-pad"
+        returnKeyType="done"
         style={styles.input}
       />
 
@@ -68,6 +78,20 @@ const AddEditScreen = ({ navigation, route }) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+AddEditScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      contact: PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string,
+        phone: PropTypes.string,
+      }),
+      fetchContacts: PropTypes.func,
+    }),
+  }),
 };
 
 const styles = StyleSheet.create({

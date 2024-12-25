@@ -13,7 +13,7 @@ const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // Fungsi untuk mendaftarkan pengguna
+  // Fungsi buat daftar akun woke
   const handleRegister = () => {
     // Validasi input kosong
     if (!username || !password) {
@@ -21,9 +21,9 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
 
-    // Mengirim data registrasi ke backend PHP
+    // Buat mengirim data registrasi ke backend PHP
     axios
-      .post("http://192.168.18.33/api/register.php", {
+      .post("http://172.20.10.5/api/register.php", {
         username: username,
         password: password,
       })
@@ -34,7 +34,7 @@ const RegisterScreen = ({ navigation }) => {
           Alert.alert("Berhasil", "Registrasi berhasil! Silakan login.");
           navigation.navigate("Login");
         } else {
-          Alert.alert("Gagal", message);
+          Alert.alert("Berhasil", message);
         }
       })
       .catch((error) => {

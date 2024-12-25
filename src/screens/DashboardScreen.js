@@ -12,10 +12,10 @@ import axios from "axios";
 const DashboardScreen = ({ navigation }) => {
   const [contacts, setContacts] = useState([]);
 
-  // Fetch contacts from API
+  // Fetch contacts buat API
   const fetchContacts = () => {
     axios
-      .get("http://192.168.18.33/api/read.php")
+      .get("http://172.20.10.5/api/read.php")
       .then((response) => setContacts(response.data))
       .catch((error) => console.log(error));
   };
@@ -39,7 +39,7 @@ const DashboardScreen = ({ navigation }) => {
           style: "destructive",
           onPress: () => {
             axios
-              .post("http://192.168.18.33/api/delete.php", { id })
+              .post("http://172.20.10.5/api/delete.php", { id })
               .then(() => fetchContacts())
               .catch((error) => console.log(error));
           },
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    elevation: 4, // shadow effect for Android
-    shadowColor: "#000", // shadow for iOS
+    elevation: 4, // shadow effect buat androit gas
+    shadowColor: "#000", // buat ios woke
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,

@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    elevation: 6, // For Android shadow
+    elevation: 6,
   },
   memberName: {
     fontSize: 18,
